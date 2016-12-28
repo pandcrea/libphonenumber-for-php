@@ -56,6 +56,25 @@ EOT;
      */
     private function writeMetadataToFile($metadataCollection, $filePrefix)
     {
+        $newCollection = [];
+        foreach ($metadataCollection as $metadata) {
+            $regionCode = $metadata->getId();
+            // For non-geographical country calling codes (e.g. +800), use the country calling codes
+            // instead of the region code to form the file name.
+            if ($regionCode === '001' || $regionCode == '') {
+                $regionCode = $metadata->getCountryCode();
+            }
+
+            $newCollection[$regionCode] = $metadata->toArray();
+        }
+
+        $data = '<?php' . PHP_EOL
+                . self::GENERATION_COMMENT . PHP_EOL
+                . 'return ' . var_export($newCollection, true) . ';' . PHP_EOL;
+
+        file_put_contents($filePrefix . '.php', $data);
+        return;
+
         foreach ($metadataCollection as $metadata) {
             /** @var $phoneMetadata PhoneMetadata */
             $regionCode = $metadata->getId();

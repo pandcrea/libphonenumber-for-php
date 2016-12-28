@@ -91,10 +91,18 @@ class MultiFileMetadataSourceImpl implements MetadataSourceInterface
     {
         $isNonGeoRegion = PhoneNumberUtil::REGION_CODE_FOR_NON_GEO_ENTITY === $regionCode;
         $fileName = $filePrefix . '_' . ($isNonGeoRegion ? $countryCallingCode : $regionCode) . '.php';
+        $fileName = $filePrefix . '.php';
         if (!is_readable($fileName)) {
             throw new \RuntimeException('missing metadata: ' . $fileName);
         } else {
             $data = $metadataLoader->loadMetadata($fileName);
+            $key = ($isNonGeoRegion ? $countryCallingCode : $regionCode);
+            if (!isset($data[$key]))
+            {
+                throw new \RuntimeException('missing metadata: ' . ' - ' . $regionCode . ' - ' . $countryCallingCode);
+            }
+
+            $data = $data[$key];
             $metadata = new PhoneMetadata();
             $metadata->fromArray($data);
             if ($isNonGeoRegion) {

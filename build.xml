@@ -35,7 +35,7 @@
     </target>
 
     <target name="compile" description="Build all Data"
-            depends="cleanup-data,compile-test-data,build-phone-metadata,build-short-metadata,build-alternate-metadata,build-carrier-data,build-timezones-data,build-geo-data">
+            depends="cleanup-data,compile-test-data,build-phone-metadata">
     </target>
 
     <target name="cleanup-test-data" description="Cleanup old built test data"
