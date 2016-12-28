@@ -2,7 +2,6 @@
 
 namespace libphonenumber\geocoding;
 
-use Giggsey\Locale\Locale;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberType;
@@ -130,10 +129,7 @@ class PhoneNumberOfflineGeocoder
             return "";
         }
 
-        return Locale::getDisplayRegion(
-            '-' . $regionCode,
-            $locale
-        );
+        return 'The world';
     }
 
     /**
@@ -170,9 +166,9 @@ class PhoneNumberOfflineGeocoder
         // for the number.
         $regionCode = $this->phoneUtil->getRegionCodeForNumber($number);
         if ($userRegion == null || $userRegion == $regionCode) {
-            $languageStr = Locale::getPrimaryLanguage($locale);
+            $languageStr = 'en';
             $scriptStr = "";
-            $regionStr = Locale::getRegion($locale);
+            $regionStr = 'The world';
 
             $mobileToken = PhoneNumberUtil::getCountryMobileToken($number->getCountryCode());
             $nationalNumber = $this->phoneUtil->getNationalSignificantNumber($number);
